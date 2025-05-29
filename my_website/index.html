@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" 
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./styles/styles.css">
+  <title>VIKTORIIA POPOVA</title>
+  <style>
+    /* Стили для шапки */
+    .header {
+      background: linear-gradient(135deg, #0aa8a8, #c1ff76, #1d6d72);
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .header__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .header__menu-list {
+      display: flex;
+      gap: 25px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 50px;
+      padding: 10px 25px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .header__menu-list li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 8px 15px;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .header__menu-list li a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .header__menu-list li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #B9FF66;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .header__menu-list li a:hover::after {
+      width: 70%;
+    }
+
+    .header__logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid white;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .header__logo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .logo__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    /* Модальные окна для изображений */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 1000;
+      cursor: pointer;
+    }
+
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+
+    .modal img {
+      max-width: 100%;
+      max-height: 90vh;
+      border: 2px solid white;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    /* Основные стили секций */
+    .section {
+      padding: 60px 0;
+    }
+    
+    .section__header {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    
+    .achievements-grid, .certificates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    
+    .achievement-card, .certificate-card {
+      border: 2px solid #B9FF66;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .achievement-card:hover, .certificate-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .achievement-card img, .certificate-card img {
+      width: auto;
+      max-height: 70vh; 
+      max-width: 90%;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      border: 1px solid #eee;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .achievement-card h3, .certificate-card h3 {
+      padding: 15px;
+      margin: 0;
+      text-align: center;
+      background: #f8f8f8;
+    }
+    
+    /* Стили для проектов */
+    .projects-grid {
+      display: grid;
+      gap: 40px;
+    }
+    
+    .project-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .project-video-container {
+      width: 100%;
+    }
+    
+    .project-video-container video {
+      width: 100%;
+      height: 70vh;
+      display: block;
+    }
+    
+    .project-details {
+      padding: 20px;
+    }
+    
+    /* Академические достижения */
+    .academic-achievements {
+      background: #f9f9f9;
+      padding: 40px;
+      border-radius: 12px;
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Модальное окно для изображений -->
+  <div id="image-modal" class="modal">
+    <div class="modal-content">
+      <img id="modal-image" src="" alt="">
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="header__inner">
+      <nav class="header__menu hidden-mobile">
+        <ul class="header__menu-list">
+          <li><a href="#about">About me</a></li>
+          <li><a href="#certificates">Certificates</a></li>
+          <li><a href="#achievements">Achievements</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contacts">Contacts</a></li>
+        </ul>
+      </nav>
+      <a class="header__logo logo" href="/">
+        <img class="logo__image" 
+             src="./images/photo of me.jpg" 
+             alt="My photo">
+      </a>
+    </div>
+  </header>
+
+  <main class="content">
+    <!-- Section "About me" -->
+    <section class="section container" id="about">
+      <div class="section__body">
+        <div class="hero">
+          <div class="hero__main">
+            <div class="hero__body">
+              <h1 class="hero__title">Viktoriia Popova</h1>
+              
+              <div class="academic-achievements">
+                <h2>Academic Achievements</h2>
+                <ul>
+                  <li>Prize-winner of All-Russian Olympiad in Chinese</li>
+                  <li>IELTS Academic: 7.0 (C1 Advanced)</li>
+                  <li>HSK 4: 235/300 (Intermediate Mandarin proficiency)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section "Certificates" -->
+    <section class="section container" id="certificates">
+      <header class="section__header">
+        <h2 class="section__title puddle-bg">My Certificates</h2>
+      </header>
+      <div class="certificates-grid">
+        <div class="certificate-card" data-image="./images/IELTS.jpg">
+          <img src="./images/IELTS.jpg" alt="IELTS Certificate">
+          <h3>IELTS Academic 7.0</h3>
+        </div>
+        
+        <div class="certificate-card" data-image="./images/HSK.jpg">
+          <img src="./images/HSK.jpg" alt="HSK 4 Certificate">
+          <h3>HSK 4 - 235/300</h3>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="certificates">
+      <div class="certificates-grid">
+        <div class="certificate-card" data-image="./images/Stepik certificate.jpg">
+          <img src="./images/Stepik certificate.jpg" alt="Stepik certificate">
+          <h3>Easy Way to Technical Writing Course on Stepik</h3>
+        </div>
+        
+        <div class="certificate-card" data-image="./images/Coursera Stanford.png">
+          <img src="./images/Coursera Stanford.png" alt="Coursera Stanford">
+          <h3>Introduction to Mathematical Thinking Course by Stanford University</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section "Introductory video" -->
+    <section class="section container" id="video">
+      <header class="section__header">
+        <h2 class="section__title puddle-bg">Introductory video</h2>
+      </header>
+      <div class="video-container">
+        <video controls style="margin: 20px auto; display: block; width: 100%; max-width: 800px;">
+          <source src="videos/" type="video/mp4">
+          Your browser doesn't support the video tag.
+        </video>
+      </div>
+    </section>
+
+    <!-- Section "Achievements" -->
+    <section class="section container" id="achievements">
+      <header class="section__header">
+        <h2 class="section__title puddle-bg">My Achievements</h2>
+      </header>
+      <div class="achievements-grid">
+        <div class="achievement-card" data-image="./images/all-rus olymp.JPEG">
+          <img src="./images/all-rus olymp.JPEG" alt="Olympiad Certificate">
+          <h3>All-Russian Olympiad in Chinese</h3>
+        </div>
+        
+        <div class="achievement-card" data-image="./images/appreciation.JPEG">
+          <img src="./images/appreciation.JPEG" alt="Appreciation Certificate">
+          <h3>Excellence in Russian Language</h3>
+        </div>
+        
+        <div class="achievement-card" data-image="./images/mayor's appreciation.JPEG">
+          <img src="./images/mayor's appreciation.JPEG" alt="Mayor's Appreciation">
+          <h3>Appreciation from the Mayor of the Tyumen city</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section "My projects" -->
+    <section class="section container" id="projects">
+      <header class="section__header">
+        <h2 class="section__title puddle-bg">My Projects</h2>
+      </header>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-video-container">
+            <video width="320" height="240" controls>
+              <source src="videos/veterinar_bot.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="project-details">
+            <h3>Veterinar_bot</h3>
+            <div class="project-info">
+              <h4>Solved Problems:</h4>
+              <ul>
+                <li>Automated initial HR screening process</li>
+                <li>Centralized applicant database management</li>
+                <li>Interactive candidate engagement</li>
+                <li>Compliance with data processing regulations</li>
+                <li>Talent pipeline development</li>
+              </ul>
+              <h4>Description:</h4>
+              <p>Telegram bot for Tobolsk Veterinary Center that automates recruitment, 
+      collects structured applicant data in SQLite database, and provides 
+      interactive information about the organization. Reduces HR workload 
+      by automating initial screening and maintaining digital records of 
+      candidates with consent management.</p>
+              <h4>Technical Implementation:</h4>
+              <ul>
+                <li>Python backend with Telebot library</li>
+                <li>SQLite database for applicant storage</li>
+                <li>Interactive inline keyboards</li>
+                <li>Google Docs integration for legal compliance</li>
+                <li>Data export functionality for HR</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-card">
+          <div class="project-video-container">
+            <video controls>
+              <source src="videos/ListFixBot.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="project-details">
+            <h3>ListFixBot</h3>
+            <div class="project-info">
+              <h4>Solved Problems:</h4>
+              <ul>
+                <li>Automated text formatting for copied lists</li>
+                <li>Standardization of inconsistent capitalization</li>
+                <li>Customizable text case modes</li>
+                <li>Workflow optimization for content creators</li>
+              <h4>Description:</h4>
+              <p>Telegram bot that automatically reformats numbered lists copied from notes applications 
+              with three text processing modes: Capitalize (first letter uppercase), Lowercase (all letters lowercase), 
+              and As-Is (preserve original formatting). Solves common formatting issues when transferring content 
+              between applications.</p>
+              <h4>Technical Implementation:</h4>
+              <ul>
+                <li>JavaScript with Node.js runtime</li>
+                <li>Telegraf framework for Telegram API</li>
+                <li>Advanced regex pattern matching</li>
+                <li>Context-aware text transformation</li>
+                <li>State management for user preferences</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer container">
+    <div class="footer__inner">
+      <div class="footer__contacts">
+        <h2 class="footer__contacts-title h4 puddle-bg">Contact me:</h2>
+        <address>
+          <p>Email: <a href="mailto:anna@example.com">vikusy_popovav@mail.ru</a></p>
+          <p>Phone number rus: <a href="tel:+79858423341">+7 985 842-33-41</a></p>
+          <p>Phone number ch: <a href="tel:+8617111163035">+86 171 111-630-35</a></p>
+          <p> My GitHub: </p>
+            <div class="social-link">
+            <a href="https://github.com/Whissssskey" target="_blank" rel="noopener noreferrer">
+                <svg class="github-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+                <span class="github-handle">@Whissssskey</span>
+            </a>
+        </address>
+      </div>
+      <div class="footer__extra">
+        <p class="footer__copyright">© 2025 Viktoriia Popova</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Один скрипт для всех модальных окон изображений
+    document.addEventListener('DOMContentLoaded', function() {
+      // Получаем все карточки с изображениями
+      const imageCards = document.querySelectorAll('.achievement-card, .certificate-card');
+      const modal = document.getElementById('image-modal');
+      const modalImg = document.getElementById('modal-image');
+      
+      // Добавляем обработчики для всех карточек
+      imageCards.forEach(card => {
+        card.addEventListener('click', function() {
+          const imageUrl = this.getAttribute('data-image');
+          const altText = this.querySelector('img').alt;
+          
+          modalImg.src = imageUrl;
+          modalImg.alt = altText;
+          modal.style.display = 'block';
+        });
+      });
+      
+      // Закрытие модального окна
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal || e.target === modalImg) {
+          modal.style.display = 'none';
+        }
+      });
+      
+      // Закрытие по клавише ESC
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          modal.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
